@@ -5,8 +5,7 @@
 
 axios.get('https://api.github.com/users/funmi7')
   .then( response => {
-     const githubContainer = document.querySelector('.cards');
-     githubContainer.appendChild(githubCreator(response.data));
+     cardContainer.appendChild(githubCreator(response.data));
   })
  
   .catch(error => {
@@ -18,8 +17,8 @@ axios.get('https://api.github.com/users/funmi7')
 
    Skip to Step 3.
 */
-
-function githubCreator({'avatar_url':avatarUrl, name, login, location, url, followers, following, bio}) {
+const cardContainer = document.querySelector('.cards');
+function githubCreator({'avatar_url':avatarUrl, name, login, location, 'html_url':htmlUrl, followers, following, bio}) {
   const cardDiv = document.createElement('div');
   const image = document.createElement('img');
   const cardInfoDiv = document.createElement('div');
@@ -37,12 +36,11 @@ function githubCreator({'avatar_url':avatarUrl, name, login, location, url, foll
   userName.textContent = login;
   locations.textContent = `Location: ${location}`;
   profile.textContent = `profile: `;
-  profileUrl.textContent = url;
+  profileUrl.textContent = htmlUrl;
   userFollowers.textContent = `Followers: ${followers}`;
   userFollowing.textContent = `Following: ${following}`;
   bios.textContent = `Bio: ${bio}`;
-  profileUrl.setAttribute('href', 'https://api.github.com/users/Funmi7');
-
+  profileUrl.setAttribute('href', 'https://github.com/Funmi7');
   cardInfoDiv.classList.add('card-info');
   usersName.classList.add('name');
   userName.classList.add('username');
@@ -76,7 +74,22 @@ function githubCreator({'avatar_url':avatarUrl, name, login, location, url, foll
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['tetondan', 'dustinmyers', 'justsml', 'luishrd', 'bigknell'];
+function gitLinks(gitHandles) {
+ return  axios.get(`https://api.github.com/users/${gitHandles}`);
+}
+followersArray.forEach((item) => {
+  gitLinks(item)
+  .then( response => {
+    cardContainer.appendChild(githubCreator(response.data))
+    })
+  .catch(error => {
+    console.log(error);
+  })
+})
+
+
+
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
