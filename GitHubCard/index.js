@@ -3,12 +3,64 @@
            https://api.github.com/users/<your name>
 */
 
+axios.get('https://api.github.com/users/funmi7')
+  .then( response => {
+     const githubContainer = document.querySelector('.cards');
+     githubContainer.appendChild(githubCreator(response.data));
+  })
+ 
+  .catch(error => {
+    console.log('error: ', error);
+  });
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
 
    Skip to Step 3.
 */
+
+function githubCreator({'avatar_url':avatarUrl, name, login, location, url, followers, following, bio}) {
+  const cardDiv = document.createElement('div');
+  const image = document.createElement('img');
+  const cardInfoDiv = document.createElement('div');
+  const usersName = document.createElement('h3');
+  const userName = document.createElement('p');
+  const locations = document.createElement('p');
+  const profile = document.createElement('p');
+  const profileUrl = document.createElement('a');
+  const userFollowers = document.createElement('p');
+  const userFollowing = document.createElement('p');
+  const bios= document.createElement('p');
+
+  image.setAttribute('src', avatarUrl);
+  usersName.textContent = name;
+  userName.textContent = login;
+  locations.textContent = `Location: ${location}`;
+  profile.textContent = `profile: `;
+  profileUrl.textContent = url;
+  userFollowers.textContent = `Followers: ${followers}`;
+  userFollowing.textContent = `Following: ${following}`;
+  bios.textContent = `Bio: ${bio}`;
+  profileUrl.setAttribute('href', 'https://api.github.com/users/Funmi7');
+
+  cardInfoDiv.classList.add('card-info');
+  usersName.classList.add('name');
+  userName.classList.add('username');
+  cardDiv.classList.add('card');
+
+  cardDiv.appendChild(image);
+  cardDiv.appendChild(cardInfoDiv);
+  cardInfoDiv.appendChild(usersName);
+  cardInfoDiv.appendChild(userName);
+  cardInfoDiv.appendChild(locations);
+  cardInfoDiv.appendChild(profile);
+  profile.appendChild(profileUrl);
+  cardInfoDiv.appendChild(userFollowers);
+  cardInfoDiv.appendChild(userFollowing);
+  cardInfoDiv.appendChild(bios);
+
+  return cardDiv;
+}
 
 /* Step 4: Pass the data received from Github into your function, 
            create a new component and add it to the DOM as a child of .cards
@@ -43,8 +95,9 @@ const followersArray = [];
     <p>Bio: {users bio}</p>
   </div>
 </div>
-
 */
+
+
 
 /* List of LS Instructors Github username's: 
   tetondan
